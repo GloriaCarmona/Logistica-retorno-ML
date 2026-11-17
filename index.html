@@ -63,7 +63,7 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <h1 class="text-lg font-bold tracking-tight">Logística | Control de Tránsitos SAP</h1>
-                            <span class="hidden sm:inline-block text-[11px] font-semibold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full">Power Pages + Dataverse</span>
+                            <span class="hidden sm:inline-block text-[11px] font-semibold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full">GitHub Pages · Guardado local</span>
                         </div>
                         <p class="text-xs text-slate-400">Usuario Activo: <strong id="header-user-display" class="text-blue-300">Operador Logístico</strong></p>
                     </div>
@@ -73,7 +73,7 @@
                 <div class="flex items-center gap-2 flex-wrap">
                     <button onclick="openExcelModal()" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-2 rounded-xl text-xs font-medium transition cursor-pointer">
                         <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-400"></i>
-                        <span>Base SAP (<span id="header-sap-count">83</span> filas)</span>
+                        <span>Base SAP (<span id="header-sap-count">0</span> filas)</span>
                     </button>
                     <button onclick="openConfirmReset()" class="flex items-center gap-1.5 bg-slate-800 hover:bg-rose-950 text-slate-300 hover:text-rose-200 border border-slate-700 px-3 py-2 rounded-xl text-xs font-medium transition cursor-pointer" title="Reiniciar datos de prueba">
                         <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
@@ -635,7 +635,7 @@
                     <i data-lucide="file-spreadsheet" class="w-5 h-5 text-emerald-400"></i>
                     <div>
                         <h3 class="font-bold text-base">Panel Super Usuario: Base de Datos SAP (Excel)</h3>
-                        <p class="text-xs text-slate-400">Carga un nuevo reporte ZMM0014.XLSX o selecciona una entrega para probar</p>
+                        <p class="text-xs text-slate-400">Carga manualmente tu reporte SAP actualizado en Excel</p>
                     </div>
                 </div>
                 <button onclick="closeExcelModal()" class="text-slate-400 hover:text-white cursor-pointer">
@@ -651,7 +651,8 @@
                         </div>
                         <div>
                             <h4 class="font-bold text-slate-800 text-sm">Actualizar Base de Tránsitos (.xlsx / .xls)</h4>
-                            <p class="text-xs text-slate-500">Mapeo SAP: Col. C (Destino), Col. F (Entrega), Col. I (Fecha), Col. L/M (Material/Desc.), Col. N (Tránsito), Col. S (Carta Porte), Col. T (Unidad).</p>
+                            <p class="text-xs text-slate-500">Mapeo ZMM0014: A/B (Origen), C (Destino), F (Entrega), H (Fecha contabilización), L/M (Material/Descripción), N (Cantidad), O (UM), S (Carta Porte), T (ID Tractor).</p>
+                            <p class="text-xs text-amber-700 mt-1"><strong>Importante:</strong> al cargar un archivo se reemplaza la base SAP anterior. Los retornos y consolidados se conservan.</p>
                         </div>
                     </div>
                     <label class="bg-blue-700 hover:bg-blue-800 text-white font-semibold text-xs px-4 py-3 rounded-xl cursor-pointer transition shrink-0">
@@ -661,9 +662,9 @@
                 </div>
 
                 <div class="flex items-center justify-between gap-3">
-                    <input type="text" id="search-sap-modal" oninput="filtrarTablaModalSAP(this.value)" placeholder="Buscar por entrega, material, origen, carta porte (Col. S) o unidad (Col. T)..." 
+                    <input type="text" id="search-sap-modal" oninput="filtrarTablaModalSAP(this.value)" placeholder="Buscar por entrega, material, origen, carta porte o ID tractor..." 
                         class="w-full py-2.5 px-4 border border-slate-300 rounded-xl text-sm outline-none focus:border-blue-500" />
-                    <span id="modal-sap-total" class="text-xs font-bold text-slate-600 whitespace-nowrap bg-slate-100 px-3 py-2.5 rounded-xl">83 filas</span>
+                    <span id="modal-sap-total" class="text-xs font-bold text-slate-600 whitespace-nowrap bg-slate-100 px-3 py-2.5 rounded-xl">0 filas</span>
                 </div>
 
                 <div class="border border-slate-200 rounded-xl overflow-hidden max-h-80 overflow-y-auto">
@@ -834,9 +835,9 @@
         <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4">
             <div class="flex items-center gap-3 text-rose-600">
                 <i data-lucide="alert-circle" class="w-6 h-6"></i>
-                <h3 class="font-bold text-lg text-slate-900">¿Reiniciar datos de prueba?</h3>
+                <h3 class="font-bold text-lg text-slate-900">¿Reiniciar la información local?</h3>
             </div>
-            <p class="text-sm text-slate-600">Se borrarán los recibos y consolidados registrados y se restaurarán los 83 registros originales de <strong>ZMM0014.XLSX</strong>.</p>
+            <p class="text-sm text-slate-600">Se eliminarán de este navegador la base SAP cargada, los recibos y los consolidados. Esta acción no se puede deshacer.</p>
             <div class="flex justify-end gap-2 pt-2">
                 <button onclick="closeConfirmReset()" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 cursor-pointer">Cancelar</button>
                 <button onclick="ejecutarReset()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white cursor-pointer">Sí, reiniciar</button>
@@ -846,93 +847,9 @@
 
     <script>
         // =========================================================================
-        // 1. BASE DE DATOS PRECARGADA SAP (83 FILAS)
+        // 1. BASE SAP: SE CARGA MANUALMENTE DESDE EXCEL
+        // No se incluyen registros SAP dentro del código.
         // =========================================================================
-        const INITIAL_SAP_DATA = [
-            { entrega: "818369293", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8073 - PLANTA MONTERREY", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14262190", unidad: "FP-660940", cantidad: 44, um: "CJ" },
-            { entrega: "818405188", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8002 - PLANTA GUADAL", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14265097", unidad: "FP-661911", cantidad: 15, um: "C/U" },
-            { entrega: "818414274", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8073 - PLANTA MONTERREY", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14264413", unidad: "FP-663100", cantidad: 44, um: "CJ" },
-            { entrega: "818432711", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8073 - PLANTA MONTERREY", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "14263394", unidad: "FP-583286", cantidad: 44, um: "CJ" },
-            { entrega: "818450713", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8076 - PLANTA VALLEJO", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "14264008", unidad: "HRG 298", cantidad: 60, um: "C/U" },
-            { entrega: "818669728", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8002 - PLANTA GUADAL", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14265097", unidad: "FP-661911", cantidad: 4, um: "C/U" },
-            { entrega: "818698620", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8073 - PLANTA MONTERREY", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "14264413", unidad: "FP-663100", cantidad: 44, um: "CJ" },
-            { entrega: "818719790", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8073 - PLANTA MONTERREY", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14268659", unidad: "FP-583207", cantidad: 44, um: "CJ" },
-            { entrega: "818914287", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8074 - PLANTA OBREGÓN", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "14259294", unidad: "TRC 29", cantidad: 60, um: "C/U" },
-            { entrega: "818937731", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8098 - CRSC SAN MARTIN OBISPO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "TRC 01", unidad: "TRC 01", cantidad: 54, um: "C/U" },
-            { entrega: "818995790", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80KH - CLSD DOLORES", destino: "8010", fechaContabilizacion: "06.11.2026", cartaPorte: "VIAJE 14263375", unidad: "06.11.2026", cantidad: 43, um: "C/U" },
-            { entrega: "819011698", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8076 - PLANTA VALLEJO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14264778", unidad: "FP588788", cantidad: 44, um: "CJ" },
-            { entrega: "819012708", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80HJ - CLSD CD.VALLES", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "14144130", unidad: "GTZ 414", cantidad: 35, um: "CJ" },
-            { entrega: "819024253", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8076 - PLANTA VALLEJO", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "14264591", unidad: "IMPERIAL 39", cantidad: 54, um: "C/U" },
-            { entrega: "819032019", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8073 - PLANTA MONTERREY", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14270092", unidad: "FP-580625", cantidad: 44, um: "CJ" },
-            { entrega: "819053476", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8076 - PLANTA VALLEJO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14270364", unidad: "LOCSA 390", cantidad: 56, um: "C/U" },
-            { entrega: "819085636", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8002 - PLANTA GUADAL", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14244665", unidad: "FP-663777", cantidad: 19, um: "C/U" },
-            { entrega: "819189099", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8093 - MIXING CENTER AZCAPOTZALCO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14268596", unidad: "ARRIEROS-4465", cantidad: 56, um: "C/U" },
-            { entrega: "819209764", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80HI - CLSD ZACATECAS", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "14257519", unidad: "TLOMA 08", cantidad: 58, um: "CJ" },
-            { entrega: "819217080", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80IS - CLSD AGUASCALIENTE", destino: "8010", fechaContabilizacion: "06.11.2026", cartaPorte: "14253581", unidad: "9872689-9872690", cantidad: 38, um: "CJ" },
-            { entrega: "819244196", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8050 - CDAC PCM", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "LOCSA 4815", unidad: "LOCSA 4815", cantidad: 28, um: "CJ" },
-            { entrega: "819246072", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8098 - CRSC SAN MARTIN OBISPO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "HRG 178", unidad: "HRG 178", cantidad: 50, um: "C/U" },
-            { entrega: "819246080", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8006 - PLANTA SALTILLO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14272477", unidad: "FP-586130", cantidad: 22, um: "C/U" },
-            { entrega: "819248245", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80HH - CLSD CELAYA", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "", unidad: "", cantidad: 25, um: "CJ" },
-            { entrega: "819266759", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8093 - MIXING CENTER AZCAPOTZALCO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14270896", unidad: "LOCSA-536021", cantidad: 60, um: "C/U" },
-            { entrega: "819279041", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8022 - SMC PMF PUEBLA", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "FP-665266", unidad: "FP-665266", cantidad: 20, um: "C/U" },
-            { entrega: "819304550", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8004 - PLANTA MÉXICO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14264501", unidad: "FP-447832", cantidad: 22, um: "CJ" },
-            { entrega: "819327747", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80KB - CLSD PTO.VALLARTA", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "VIAJE 14257788", unidad: "ABOYTES 5329", cantidad: 55, um: "CJ" },
-            { entrega: "819341090", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8050 - CDAC PCM", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "LOCSA 53508", unidad: "LOCSA 53508", cantidad: 56, um: "C/U" },
-            { entrega: "819342065", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8073 - PLANTA MONTERREY", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14262190", unidad: "FP-660940", cantidad: 44, um: "CJ" },
-            { entrega: "819370791", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8004 - PLANTA MÉXICO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14269770", unidad: "GENESIS 4863", cantidad: 28, um: "CJ" },
-            { entrega: "819376144", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8098 - CRSC SAN MARTIN OBISPO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "HRG 218", unidad: "HRG 218", cantidad: 60, um: "C/U" },
-            { entrega: "819377514", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8093 - MIXING CENTER AZCAPOTZALCO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14269390", unidad: "ARRIEROS-4445", cantidad: 60, um: "C/U" },
-            { entrega: "819386673", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80KE - CLSD SAN JUAN DEL RIO", destino: "8010", fechaContabilizacion: "06.11.2026", cartaPorte: "14263374", unidad: "", cantidad: 45, um: "C/U" },
-            { entrega: "819390530", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8093 - MIXING CENTER AZCAPOTZALCO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "carta porte", unidad: "FP-667657", cantidad: 22, um: "CJ" },
-            { entrega: "819392116", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8093 - MIXING CENTER AZCAPOTZALCO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14266845", unidad: "HRG-196", cantidad: 60, um: "C/U" },
-            { entrega: "819396202", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8050 - CDAC PCM", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "ARRIEROS 4479", unidad: "ARRIEROS 4479", cantidad: 55, um: "CJ" },
-            { entrega: "819398745", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80IT - CLSD HUENTITAN", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "VELA 22", unidad: "VIAJE 14257765", cantidad: 42, um: "CJ" },
-            { entrega: "819400390", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8076 - PLANTA VALLEJO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14272167", unidad: "LOCSA 5350", cantidad: 60, um: "C/U" },
-            { entrega: "819405941", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8006 - PLANTA SALTILLO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14264013", unidad: "FP-666661", cantidad: 22, um: "C/U" },
-            { entrega: "819407679", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80HH - CLSD CELAYA", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "", unidad: "", cantidad: 17, um: "CJ" },
-            { entrega: "819434459", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8073 - PLANTA MONTERREY", destino: "8010", fechaContabilizacion: "06.11.2026", cartaPorte: "14268659", unidad: "FP-583207", cantidad: 44, um: "CJ" },
-            { entrega: "819452017", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80JG - CLSD LEON", destino: "8010", fechaContabilizacion: "06.11.2026", cartaPorte: "14263290", unidad: "", cantidad: 47, um: "CJ" },
-            { entrega: "819461154", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8004 - PLANTA MÉXICO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14272833", unidad: "GENESIS 5328", cantidad: 27, um: "CJ" },
-            { entrega: "819465074", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8074 - PLANTA OBREGÓN", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14266195", unidad: "FP-449346", cantidad: 44, um: "C/U" },
-            { entrega: "819503918", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8006 - PLANTA SALTILLO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14265366", unidad: "FP-663695", cantidad: 22, um: "C/U" },
-            { entrega: "819515521", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8020 - CDB MIXING CENTER BAJIO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "666686", unidad: "97861*62", cantidad: 320, um: "C/U" },
-            { entrega: "819520616", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8050 - CDAC PCM", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "ARRIEROS 4469", unidad: "ARRIEROS 4469", cantidad: 27, um: "CJ" },
-            { entrega: "819523382", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8073 - PLANTA MONTERREY", destino: "8010", fechaContabilizacion: "06.11.2026", cartaPorte: "14270092", unidad: "FP-580625", cantidad: 44, um: "CJ" },
-            { entrega: "819526860", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8076 - PLANTA VALLEJO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14264779", unidad: "LOCSA 48105", cantidad: 56, um: "C/U" },
-            { entrega: "819536024", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8020 - CDB MIXING CENTER BAJIO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "ENVIO SALADO GALLETA", unidad: "", cantidad: 7, um: "C/U" },
-            { entrega: "819583927", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8050 - CDAC PCM", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "ZUÑIGA 09", unidad: "ZUÑIGA 09", cantidad: 28, um: "CJ" },
-            { entrega: "819605438", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8020 - CDB MIXING CENTER BAJIO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "584981", unidad: "97845*46", cantidad: 320, um: "C/U" },
-            { entrega: "819608078", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8021 - MIXING CENTER HENCO TULTITLAN", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "HRG 346", unidad: "HRG 346", cantidad: 56, um: "C/U" },
-            { entrega: "819614425", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8093 - MIXING CENTER AZCAPOTZALCO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14272513", unidad: "ARRIEROS-4443", cantidad: 30, um: "C/U" },
-            { entrega: "819615413", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8053 - PLANTA ABC", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14265928", unidad: "FP-660243", cantidad: 22, um: "C/U" },
-            { entrega: "819616942", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8050 - CDAC PCM", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "ARRIEROS 4464", unidad: "ARRIEROS 4464", cantidad: 38, um: "C/U" },
-            { entrega: "819622942", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80QH - CDS TEPIC", destino: "8010", fechaContabilizacion: "06.11.2026", cartaPorte: "14263376 VELA11", unidad: "", cantidad: 49, um: "C/U" },
-            { entrega: "819626384", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80KD - CLSD RIO VERDE", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "TRANSPORTE 14257474", unidad: "9502323:9502324", cantidad: 35, um: "CJ" },
-            { entrega: "819639931", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8002 - PLANTA GUADAL", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14244665", unidad: "FP-663777", cantidad: 3, um: "C/U" },
-            { entrega: "819640394", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80HH - CLSD CELAYA", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "", unidad: "", cantidad: 5, um: "CJ" },
-            { entrega: "819647878", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8006 - PLANTA SALTILLO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14268266", unidad: "FP-662096", cantidad: 22, um: "C/U" },
-            { entrega: "819657879", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80IM - CLSD GUADALAJARA", destino: "8010", fechaContabilizacion: "06.11.2026", cartaPorte: "VIAJE 14263582", unidad: "ABOYTES 5328", cantidad: 44, um: "CJ" },
-            { entrega: "819665352", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80IS - CLSD AGUASCALIENTE", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "14257793", unidad: "9872681-9872682", cantidad: 43, um: "C/U" },
-            { entrega: "819666378", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8076 - PLANTA VALLEJO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14269541", unidad: "LOCSA 5355", cantidad: 60, um: "C/U" },
-            { entrega: "819671951", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8076 - PLANTA VALLEJO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14275146", unidad: "FP-449804", cantidad: 44, um: "C/U" },
-            { entrega: "819674904", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80HH - CLSD CELAYA", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "", unidad: "", cantidad: 33, um: "CJ" },
-            { entrega: "819677367", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80JJ - CLSD MORELIA", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "14258025", unidad: "", cantidad: 35, um: "CJ" },
-            { entrega: "819677378", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8076 - PLANTA VALLEJO", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14274377", unidad: "FP-586877", cantidad: 44, um: "C/U" },
-            { entrega: "819690332", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8050 - CDAC PCM", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "ARRIEROS 4456", unidad: "ARRIEROS 4456", cantidad: 14, um: "CJ" },
-            { entrega: "819691827", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8002 - PLANTA GUADAL", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14265097", unidad: "FP-661911", cantidad: 3, um: "C/U" },
-            { entrega: "819699353", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80IX - CLSD ZAPOPAN", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "R.819304543 R.GTZ59UW3S", unidad: "VIAJE 14258027", cantidad: 36, um: "CJ" },
-            { entrega: "819707819", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8050 - CDAC PCM", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "LTS 23", unidad: "LTS 23", cantidad: 30, um: "CJ" },
-            { entrega: "819709316", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8050 - CDAC PCM", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "ARRIEROS 4477", unidad: "ARRIEROS 4477", cantidad: 50, um: "C/U" },
-            { entrega: "819710805", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80IM - CLSD GUADALAJARA", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "VIAJE 14258026", unidad: "ABOYTES 5323", cantidad: 51, um: "CJ" },
-            { entrega: "819715317", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80IL - CLSD URUAPAN", destino: "8010", fechaContabilizacion: "06.11.2026", cartaPorte: "14265371", unidad: "14265371", cantidad: 17, um: "CJ" },
-            { entrega: "819717324", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80XK - CLSD LEON II", destino: "8010", fechaContabilizacion: "05.11.2026", cartaPorte: "14258081", unidad: "ABOYTES 21", cantidad: 44, um: "C/U" },
-            { entrega: "819720808", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8004 - PLANTA MÉXICO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "14265599", unidad: "FP-660160", cantidad: 22, um: "CJ" },
-            { entrega: "819721303", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8020 - CDB MIXING CENTER BAJIO", destino: "8070", fechaContabilizacion: "05.11.2026", cartaPorte: "660267", unidad: "97843*44", cantidad: 320, um: "C/U" },
-            { entrega: "819730304", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "80JF - CLSD TEPATITLAN", destino: "8010", fechaContabilizacion: "06.11.2026", cartaPorte: "", unidad: "", cantidad: 41, um: "CJ" },
-            { entrega: "819730807", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8053 - PLANTA ABC", destino: "8010", fechaContabilizacion: "06.11.2026", cartaPorte: "14269941", unidad: "APOLO-373", cantidad: 28, um: "C/U" },
-            { entrega: "819730832", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8050 - CDAC PCM", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "TRC 25", unidad: "TRC 25", cantidad: 36, um: "C/U" },
-            { entrega: "819735804", material: "1200000090", descMaterial: "TARIMA CHEP", origen: "8074 - PLANTA OBREGÓN", destino: "8070", fechaContabilizacion: "06.11.2026", cartaPorte: "14274286", unidad: "FP-666959", cantidad: 44, um: "C/U" }
-        ];
 
         // =========================================================================
         // 2. ESTADO DE LA APLICACIÓN
@@ -952,128 +869,36 @@
         let canvasFirmaElaboro = null, ctxFirmaElaboro = null, dibujandoElaboro = false;
         let canvasFirmaOperador = null, ctxFirmaOperador = null, dibujandoOperador = false;
 
-        // =====================================================================
-        // POWER PAGES + DATAVERSE: CONFIGURACIÓN
-        // IMPORTANTE: sustituye los nombres de ejemplo por los nombres reales
-        // de tu tabla y columnas en Dataverse antes de publicar.
-        // Este puente usa una fila de estado con JSON: útil para piloto inicial.
-        // Para muchos usuarios simultáneos, migrar después a tablas relacionales.
-        // =====================================================================
-        const PP_CONFIG = {
-            entitySetName: "REEMPLAZAR_ENTITY_SET_NAME",
-            primaryIdField: "REEMPLAZAR_PRIMARY_ID_FIELD",
-            nameField: "REEMPLAZAR_NAME_FIELD",
-            nameValue: "CONTROL_TRANSITOS_SAP",
-            sapField: "REEMPLAZAR_SAP_JSON_FIELD",
-            returnsField: "REEMPLAZAR_RETURNS_JSON_FIELD",
-            consolidatedField: "REEMPLAZAR_CONSOLIDATED_JSON_FIELD"
-        };
-        let ppStateRecordId = null;
-        let ppClockStarted = false;
-
-        function ppGetToken() {
-            return new Promise((resolve, reject) => {
-                if (!window.shell || typeof shell.getTokenDeferred !== 'function') {
-                    reject(new Error('No se encontró el mecanismo de seguridad de Power Pages.'));
-                    return;
-                }
-                shell.getTokenDeferred().done(resolve).fail(reject);
-            });
-        }
-
-        async function ppRequest(method, path, body) {
-            const token = await ppGetToken();
-            const headers = {
-                "Accept": "application/json",
-                "Content-Type": "application/json; charset=utf-8",
-                "OData-MaxVersion": "4.0",
-                "OData-Version": "4.0",
-                "__RequestVerificationToken": token
-            };
-            if (method === 'PATCH' || method === 'DELETE') headers['If-Match'] = '*';
-            const response = await fetch('/_api/' + path, {
-                method,
-                headers,
-                credentials: 'same-origin',
-                body: body ? JSON.stringify(body) : undefined
-            });
-            if (!response.ok) {
-                const detail = await response.text();
-                throw new Error(`Dataverse ${method} ${response.status}: ${detail}`);
-            }
-            if (response.status === 204) return null;
-            const type = response.headers.get('content-type') || '';
-            return type.includes('application/json') ? response.json() : null;
-        }
-
-        function ppRecordQuery() {
-            const select = [PP_CONFIG.primaryIdField, PP_CONFIG.nameField, PP_CONFIG.sapField,
-                PP_CONFIG.returnsField, PP_CONFIG.consolidatedField].join(',');
-            const filter = `${PP_CONFIG.nameField} eq '${PP_CONFIG.nameValue.replace(/'/g, "''")}'`;
-            return `${PP_CONFIG.entitySetName}?$select=${select}&$filter=${encodeURIComponent(filter)}&$top=1`;
-        }
-
-        async function ppFindStateRecord() {
-            const data = await ppRequest('GET', ppRecordQuery());
-            return (data && data.value && data.value.length) ? data.value[0] : null;
-        }
-
-        async function ppEnsureStateRecord() {
-            let record = await ppFindStateRecord();
-            if (!record) {
-                const initial = {
-                    [PP_CONFIG.nameField]: PP_CONFIG.nameValue,
-                    [PP_CONFIG.sapField]: JSON.stringify(INITIAL_SAP_DATA),
-                    [PP_CONFIG.returnsField]: JSON.stringify([]),
-                    [PP_CONFIG.consolidatedField]: JSON.stringify([])
-                };
-                await ppRequest('POST', PP_CONFIG.entitySetName, initial);
-                record = await ppFindStateRecord();
-            }
-            if (!record || !record[PP_CONFIG.primaryIdField]) {
-                throw new Error('No se pudo localizar el registro central de Control de Tránsitos en Dataverse.');
-            }
-            ppStateRecordId = record[PP_CONFIG.primaryIdField];
-            return record;
-        }
-
-        async function ppLoadState() {
-            const record = await ppEnsureStateRecord();
-            return {
-                sap: JSON.parse(record[PP_CONFIG.sapField] || '[]'),
-                returns: JSON.parse(record[PP_CONFIG.returnsField] || '[]'),
-                consolidated: JSON.parse(record[PP_CONFIG.consolidatedField] || '[]')
-            };
-        }
-
-        async function ppSaveState() {
-            if (!ppStateRecordId) await ppEnsureStateRecord();
-            const payload = {
-                [PP_CONFIG.sapField]: JSON.stringify(sapDatabase),
-                [PP_CONFIG.returnsField]: JSON.stringify(retornosRecibidos),
-                [PP_CONFIG.consolidatedField]: JSON.stringify(consolidadosList)
-            };
-            await ppRequest('PATCH', `${PP_CONFIG.entitySetName}(${ppStateRecordId})`, payload);
-        }
+        // =========================================================================
+        // PERSISTENCIA LOCAL PARA GITHUB PAGES
+        // SAP se carga manualmente desde Excel. Los datos se guardan en el navegador.
+        // NOTA: localStorage no sincroniza entre usuarios, dispositivos o navegadores.
+        // =========================================================================
+        const STORAGE_KEY = 'control_transitos_logisticos_v1';
 
         async function initApp() {
             try {
-                const state = await ppLoadState();
-                sapDatabase = state.sap.length ? state.sap : [...INITIAL_SAP_DATA];
-                retornosRecibidos = state.returns;
-                consolidadosList = state.consolidated;
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const state = JSON.parse(saved);
+                    sapDatabase = Array.isArray(state.sap) ? state.sap : [];
+                    retornosRecibidos = Array.isArray(state.returns) ? state.returns : [];
+                    consolidadosList = Array.isArray(state.consolidated) ? state.consolidated : [];
+                } else {
+                    sapDatabase = [];
+                    retornosRecibidos = [];
+                    consolidadosList = [];
+                }
             } catch (error) {
-                console.error(error);
-                showToast('No fue posible cargar los datos desde Dataverse. Revisa configuración y permisos.', 'error');
-                return;
+                console.error('No fue posible leer los datos locales:', error);
+                sapDatabase = [];
+                retornosRecibidos = [];
+                consolidadosList = [];
+                showToast('No se pudieron leer los datos guardados en este navegador.', 'error');
             }
 
             actualizarReloj();
-            if (!ppClockStarted) {
-                setInterval(actualizarReloj, 1000);
-                ppClockStarted = true;
-            }
-
+            setInterval(actualizarReloj, 1000);
             actualizarContadoresUI();
             poblarSelectorEntregas();
             renderTablaRetornos();
@@ -1081,16 +906,24 @@
             renderEnviosConsolidados();
             renderConfirmacion();
             lucide.createIcons();
+            if (!sapDatabase.length) {
+                showToast('Carga manualmente tu reporte ZMM0014.xlsx desde Base SAP para comenzar.', 'info');
+            }
         }
-
 
         async function saveState() {
             try {
-                await ppSaveState();
+                const state = {
+                    sap: sapDatabase,
+                    returns: retornosRecibidos,
+                    consolidated: consolidadosList,
+                    updatedAt: new Date().toISOString()
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
                 actualizarContadoresUI();
             } catch (error) {
-                console.error(error);
-                showToast('No se guardaron los cambios en Dataverse. Verifica permisos y conexión.', 'error');
+                console.error('No fue posible guardar los datos locales:', error);
+                showToast('No se guardaron los cambios. Puede estar lleno el almacenamiento del navegador.', 'error');
                 throw error;
             }
         }
@@ -2259,11 +2092,11 @@
                                 descMaterial: String(row[12] || '').trim() || 'MATERIAL LOGÍSTICO',
                                 origen: origenFull,
                                 destino: String(row[2] || '').trim() || 'DESTINO SAP',
-                                fechaContabilizacion: formatearFechaSAP(row[8]),
+                                fechaContabilizacion: formatearFechaSAP(row[7]),
                                 cartaPorte: String(row[18] || '').trim(),
                                 unidad: String(row[19] || '').trim(),
                                 cantidad: parseFloat(row[13]) || 0,
-                                um: String(row[15] || '').trim() || 'PZA'
+                                um: String(row[14] || '').trim() || 'PZA'
                             };
                         } else {
                             const getByPattern = (patterns) => {
@@ -2501,7 +2334,7 @@
 
         async function ejecutarReset() {
             try {
-                sapDatabase = [...INITIAL_SAP_DATA];
+                sapDatabase = [];
                 retornosRecibidos = [];
                 consolidadosList = [];
                 carritoConsolidado = [];
@@ -2514,9 +2347,9 @@
                 renderListaRetornosDisponibles();
                 renderEnviosConsolidados();
                 renderConfirmacion();
-                showToast('Datos restaurados al estado original del reporte ZMM0014.XLSX.', 'info');
+                showToast('Se limpió la información local. Carga nuevamente tu Excel SAP cuando lo necesites.', 'info');
             } catch (error) {
-                showToast('No fue posible reiniciar los datos en Dataverse.', 'error');
+                showToast('No fue posible limpiar los datos guardados en este navegador.', 'error');
             }
         }
 
